@@ -2,13 +2,20 @@
 const form = document.querySelector('#task-form');
 const taskList = document.querySelector('.collection');
 const taskInput = document.querySelector('#task');
-const clearTask = document.querySelector('#clear-task');
+const clearBtn = document.querySelector('.clear-tasks');
+const filter = document.querySelector('#filter');
 
 // load all eventlistener
 loadEventListener();
 function loadEventListener() {
-  // Add eventlistener on form
+  // Add task event
   form.addEventListener('submit', addTask);
+  // Remove task event
+  taskList.addEventListener('click', removeTask);
+  // clear task event
+  clearBtn.addEventListener('click', clearTasks);
+  // filter task event
+  filter.addEventListener('keyup', filterTask);
 }
 
 // addTask function
@@ -27,9 +34,26 @@ function addTask(e) {
   //   Add class to link
   link.className = 'delete-item secondary-content';
   //   add icon html
-  link.innerHTML = '<i class= "fa fa remove" ></i>';
+  link.innerHTML = '<i class= "fa fa-remove" ></i>';
   li.appendChild(link);
   taskList.appendChild(li);
   taskInput.value = '';
   e.preventDefault();
+}
+// Remove tasks function
+function removeTask(e) {
+  // Check if clicked target contains the required class
+  if (e.target.parentElement.classList.contains('delete-item')) {
+    if (confirm('Are you sure?')) {
+      e.target.parentElement.parentElement.remove();
+    }
+  }
+}
+// Remove All tasks function
+function clearTasks(e) {
+  if (confirm('Are you sure to clear tasks?')) {
+    while (taskList.firstChild) {
+      taskList.removeChild(taskList.firstChild);
+    }
+  }
 }
